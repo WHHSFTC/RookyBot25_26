@@ -32,6 +32,7 @@ public class Drivetrain {
         turtleMultiplier = 0.6; // Default 60% multiplier
     }
 
+    // Method to move the robot using gamepad input, this will be called every loop cycle to update driver 1 inputs
     public void moveWithGamepad() {
         double x, y, rx;
         y = -driverOneGamepad.left_stick_y; // Y stick reversed
@@ -110,8 +111,11 @@ public class Drivetrain {
         return backRightPower;
     }
 
-    // Method to stop the motors
+    // Activate Motor Braking
     public void stop() {
-        drive(0, 0, 0);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 }

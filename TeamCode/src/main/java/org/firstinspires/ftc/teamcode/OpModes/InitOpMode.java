@@ -9,6 +9,7 @@ public class InitOpMode extends OpMode {
     // This method runs once when the "INIT" button is pressed on Driver Station
     @Override
     public void init() {
+
     }
 
     public void loop() {
