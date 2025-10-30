@@ -57,7 +57,7 @@ public class Output {
      * @param targetRPM The desired RPM for the flywheel.
      * @return true if the motor is at the target RPM, false otherwise.
      */
-    public boolean setTargetRPM(double targetRPM) {
+    public boolean setFlywheelRPM(double targetRPM) {
         this.targetRPM = targetRPM;
 
         // Convert RPM to ticks per second
