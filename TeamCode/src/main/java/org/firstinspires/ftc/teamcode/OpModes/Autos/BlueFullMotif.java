@@ -1,4 +1,4 @@
 package org.firstinspires.ftc.teamcode.OpModes.Autos;
 
-public class BlueDoubleClassifier {
+public class BlueFullMotif {
 }

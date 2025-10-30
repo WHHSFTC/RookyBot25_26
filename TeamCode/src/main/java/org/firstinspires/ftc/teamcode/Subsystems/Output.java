@@ -31,7 +31,7 @@ public class Output {
 
     // Motor specifics for Gobilda 5203 6000rpm motor
     private static final double TICKS_PER_REVOLUTION = 28;
-    private static final double GEAR_RATIO = 1.0; // If there's a gearbox
+    private static final double GEAR_RATIO = 2.4; // If there's a gearbox
 
     // RPM tolerance
     private static final double RPM_TOLERANCE = 20.0;
