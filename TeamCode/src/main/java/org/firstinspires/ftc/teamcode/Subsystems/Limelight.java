@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Limelight subsystem class for handling all Limelight-related logic.
  * This class abstracts away the raw API calls and provides simple methods
- * for getting AprilTag data and robot pose.
+ * for getting AprilTag data.
  */
 public class Limelight {
 
@@ -56,6 +56,7 @@ public class Limelight {
     // These should match the pipeline setup in your Limelight web interface
     public static final int TARGETING_PIPELINE_INDEX = 0; // Pipeline for GOAL AprilTags
     public static final int OBELISK_PIPELINE_INDEX = 1;   // Pipeline for OBELISK AprilTags
+    public static final int RELOCALIZATION_PIPELINE_INDEX = 2; // Pipeline for Field Pose (Botpose/MegaTag)
 
     // Constants for hardware map and configuration
     private static final String HARDWARE_MAP_NAME = "limelight";
@@ -77,7 +78,7 @@ public class Limelight {
     }
 
     /**
-     * --- THIS METHOD MUST BE CALLED IN THE OPMODE'S loop() ---
+     * --- THIS METHOD MUST BE CALLED IN YOUR OPMODE'S loop() ---
      * Polls the Limelight for the latest result and updates the internal state.
      * This keeps the data (like latestResult) fresh.
      */
@@ -147,13 +148,12 @@ public class Limelight {
     }
 
     /**
-     * Updates the Limelight with the robot's current yaw (rotation) from the IMU.
-     * This is used for MegaTag2 (MT2) pose estimation, which is more accurate.
-     * @param yawInDegrees The robot's current heading from the IMU.
+     * Helper method to switch to the Relocalization (Botpose) pipeline.
      */
-    public void updateRobotOrientation(double yawInDegrees) {
-        limelight.updateRobotOrientation(yawInDegrees);
+    public void setRelocalizationPipeline() {
+        setPipeline(RELOCALIZATION_PIPELINE_INDEX);
     }
+
 
     // --- AUTONOMOUS-SPECIFIC GETTERS ---
 
@@ -263,6 +263,23 @@ public class Limelight {
     }
 
 
+    // --- RELOCALIZATION GETTER ---
+
+    /**
+     * Gets the robot's absolute field pose (Botpose / MegaTag) from the Limelight.
+     * Make sure you are on the RELOCALIZATION_PIPELINE_INDEX and have called update()!
+     * @return Pose3D object in FTC field coordinates (meters), or null if not visible.
+     */
+    public Pose3D getAbsoluteFieldPose() {
+        if (!hasValidResult()) {
+            return null;
+        }
+        // getBotpose() returns the robot's 3D position on the field
+        // This requires a "Full 3D" AprilTag pipeline.
+        return latestResult.getBotpose();
+    }
+
+
     // --- GENERIC DATA GETTER METHODS ---
 
     /**
@@ -271,25 +288,6 @@ public class Limelight {
      */
     public boolean hasValidResult() {
         return latestResult != null && latestResult.isValid();
-    }
-
-    /**
-     * Gets the robot's 3D pose on the field (MegaTag1).
-     * @return Pose3D object, or null if no valid pose.
-     */
-    public Pose3D getRobotPose() {
-        if (!hasValidResult()) return null;
-        return latestResult.getBotpose();
-    }
-
-    /**
-     * Gets the robot's 3D pose on the field, fused with IMU data (MegaTag2).
-     * Requires updateRobotOrientation() to be called.
-     * @return Pose3D object, or null if no valid pose.
-     */
-    public Pose3D getRobotPoseMT2() {
-        if (!hasValidResult()) return null;
-        return latestResult.getBotpose_MT2();
     }
 
     /**
@@ -359,12 +357,6 @@ public class Limelight {
     /**
      * Gets the staleness of the last result (how many milliseconds old it is).
      * @return staleness in ms, or a large number if no valid result.
-    Example usage in Autonomous:
-    limelight.setObeliskPipeline();
-    sleep(200); // Give pipeline time to switch
-    limelight.update();
-    Motif detectedMotif = limelight.getDetectedMotif();
-    telemetry.addData("Detected Motif", detectedMotif);
      */
     public long getStaleness() {
         if (!hasValidResult()) return 9999;
