@@ -10,6 +10,5 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 public class TeleBlue extends InitOpMode {
     @Override
     public void loop() {
-        drivetrain.moveWithGamepad();
     }
 }
