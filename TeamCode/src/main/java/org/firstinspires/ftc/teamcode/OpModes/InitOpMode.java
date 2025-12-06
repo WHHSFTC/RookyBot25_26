@@ -16,7 +16,7 @@ public class InitOpMode extends OpMode {
     public Double middleFlipperPosition = 0.22;
     public Double FlywheelSpeed = 0.0;
     public DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
-
+    public Double Speed;
     @Override
     public void init() {
         sideFlipperLeft = hardwareMap.get(Servo.class, "sideFlipperLeft");

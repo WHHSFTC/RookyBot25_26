@@ -35,10 +35,10 @@ boolean intakeState = false;
             middleFlipper.setPosition(-middleFlipperPosition);
         }
         if (gamepad1.dpadUpWasPressed()) { // motors have 28 ticks per revolution
-            if (FlywheelSpeed < 2800.0) {
-                FlywheelSpeed += (2800.0 * (1.0/6.0));
-            } else if (FlywheelSpeed >= 2800.0) {
-                FlywheelSpeed = 2800.0;
+            if (FlywheelSpeed < 1500.00) {
+                FlywheelSpeed += (1500.0 * (1.0/6.0));
+            } else if (FlywheelSpeed >= 1500.0) {
+                FlywheelSpeed = 1500.0;
             }
             Flywheel.setVelocity(FlywheelSpeed);
             telemetry.addData("Target Flywheel Speed:", FlywheelSpeed);
@@ -46,13 +46,14 @@ boolean intakeState = false;
             telemetry.update();
         }
         if (gamepad1.dpad_down) {
+            FlywheelSpeed = 0.0;
             Flywheel.setVelocity(0);
             telemetry.addData("Target Flywheel Speed:", FlywheelSpeed);
             telemetry.addData("Actual Flywheel Speed:", Flywheel.getVelocity());
             telemetry.update();
         }
         if (gamepad1.aWasPressed()) {
-            if (intakeState) {
+            if (intakeState == false) {
                 //Code for when intake is turning on
                 intakeState = true;
                 Intake.setPower(1150);
