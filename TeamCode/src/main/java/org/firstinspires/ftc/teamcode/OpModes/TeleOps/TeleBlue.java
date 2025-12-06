@@ -19,14 +19,14 @@ boolean intakeState = false;
 
 
         if (gamepad1.right_bumper) {
-            sideFlipperRight.setPosition(openFlipperPosition);
-        } else {
             sideFlipperRight.setPosition(closedFlipperPosition);
+        } else {
+            sideFlipperRight.setPosition(openFlipperPosition);
         }
         if (gamepad1.left_bumper) {
-            sideFlipperLeft.setPosition(closedFlipperPosition);
-        } else {
             sideFlipperLeft.setPosition(openFlipperPosition);
+        } else {
+            sideFlipperLeft.setPosition(closedFlipperPosition);
         }
         if (gamepad1.dpad_right) {
             middleFlipper.setPosition(middleFlipperPosition);
@@ -34,31 +34,33 @@ boolean intakeState = false;
         if (gamepad1.dpad_left) {
             middleFlipper.setPosition(-middleFlipperPosition);
         }
-        if (gamepad1.dpad_up) {
-          FlywheelSpeed= FlywheelSpeed + 1000.0;
-          Flywheel.setPower(FlywheelSpeed);
-        } else if (gamepad1.dpad_down) {
-           Flywheel.setPower(0);
-        }
-        if (gamepad1.dpad_up) {
-            if (FlywheelSpeed < 6000.0) {
-                FlywheelSpeed = FlywheelSpeed + 1000.0;
-            } else if (FlywheelSpeed >= 6000.0) {
-                FlywheelSpeed = 6000.0;
+        if (gamepad1.dpadUpWasPressed()) { // motors have 28 ticks per revolution
+            if (FlywheelSpeed < 2800.0) {
+                FlywheelSpeed += (2800.0 * (1.0/6.0));
+            } else if (FlywheelSpeed >= 2800.0) {
+                FlywheelSpeed = 2800.0;
             }
-            Flywheel.setPower(FlywheelSpeed);
+            Flywheel.setVelocity(FlywheelSpeed);
+            telemetry.addData("Target Flywheel Speed:", FlywheelSpeed);
+            telemetry.addData("Actual Flywheel Speed:", Flywheel.getVelocity());
+            telemetry.update();
         }
         if (gamepad1.dpad_down) {
-            Flywheel.setPower(0);
+            Flywheel.setVelocity(0);
+            telemetry.addData("Target Flywheel Speed:", FlywheelSpeed);
+            telemetry.addData("Actual Flywheel Speed:", Flywheel.getVelocity());
+            telemetry.update();
         }
-        if (gamepad1.a && intakeState == false) {
-            //Code for when intake is turning on
-            intakeState = true;
-            Intake.setPower(1150);
-        } else if (gamepad1.a && intakeState == true) {
-            //Code for when intake is turning off
-            intakeState = false;
-            Intake.setPower(0);
+        if (gamepad1.aWasPressed()) {
+            if (intakeState) {
+                //Code for when intake is turning on
+                intakeState = true;
+                Intake.setPower(1150);
+            } else {
+                //Code for when intake is turning off
+                intakeState = false;
+                Intake.setPower(0);
+            }
         }
 
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);

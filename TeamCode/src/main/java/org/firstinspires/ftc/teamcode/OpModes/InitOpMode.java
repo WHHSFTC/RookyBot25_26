@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -9,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 
 public class InitOpMode extends OpMode {
     public Servo sideFlipperLeft, sideFlipperRight, middleFlipper;
-    public DcMotor Flywheel,Intake;
+    public DcMotorEx Flywheel,Intake;
     public Double openFlipperPosition = 0.4;
     public Double closedFlipperPosition = 0.0;
     public Double middleFlipperPosition = 0.22;
@@ -21,16 +22,18 @@ public class InitOpMode extends OpMode {
         sideFlipperLeft = hardwareMap.get(Servo.class, "sideFlipperLeft");
         sideFlipperRight = hardwareMap.get(Servo.class, "sideFlipperRight");
         middleFlipper = hardwareMap.get(Servo.class, "middleFlipper");
-        Flywheel = hardwareMap.get(DcMotor.class, "Flywheel");
-        Intake = hardwareMap.get(DcMotor.class, "Intake");
+        Flywheel = hardwareMap.get(DcMotorEx.class, "Flywheel");
+        Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        Intake = hardwareMap.get(DcMotorEx.class, "Intake");
         //DRive train motors
         leftFrontMotor = hardwareMap.get(DcMotor.class, "leftFrontMotor");
         rightFrontMotor = hardwareMap.get(DcMotor.class, "rightFrontMotor");
         leftBackMotor = hardwareMap.get(DcMotor.class, "leftBackMotor");
         rightBackMotor = hardwareMap.get(DcMotor.class, "rightBackMotor");
         //Flippers
-        sideFlipperLeft.setPosition(openFlipperPosition);
-        sideFlipperRight.setPosition(closedFlipperPosition);
+        sideFlipperLeft.setPosition(closedFlipperPosition);
+        sideFlipperRight.setPosition(openFlipperPosition);
         middleFlipper.setPosition(closedFlipperPosition);
         //Drivetrain forward and backwards
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
