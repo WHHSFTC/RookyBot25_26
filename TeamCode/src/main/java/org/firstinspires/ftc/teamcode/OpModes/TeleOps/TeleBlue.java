@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 @TeleOp(name = "TeleBlue", group = "OpModes")
 public class TeleBlue extends InitOpMode {
 
-boolean intakeState = false;
     @Override
     public void loop() {
 
@@ -52,16 +51,13 @@ boolean intakeState = false;
             telemetry.addData("Actual Flywheel Speed:", Flywheel.getVelocity());
             telemetry.update();
         }
-        if (gamepad1.aWasPressed()) {
-            if (intakeState == false) {
-                //Code for when intake is turning on
-                intakeState = true;
-                Intake.setPower(1150);
-            } else {
-                //Code for when intake is turning off
-                intakeState = false;
-                Intake.setPower(0);
-            }
+        if (gamepad1.right_trigger > 0.0) {
+            //Code for when intake is turning on
+            Intake.setPower(1150);
+        }
+        if (gamepad1.right_trigger == 0.0) {
+            //Code for when intake is turning off
+            Intake.setPower(0);
         }
 
         mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
