@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.OpModes.InitOpMode;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
 
@@ -19,14 +20,14 @@ boolean intakeState = false;
 
 
         if (gamepad1.right_bumper) {
-            sideFlipperRight.setPosition(openFlipperPosition);
-        } else {
             sideFlipperRight.setPosition(closedFlipperPosition);
+        } else {
+            sideFlipperRight.setPosition(openFlipperPosition);
         }
         if (gamepad1.left_bumper) {
-            sideFlipperLeft.setPosition(closedFlipperPosition);
-        } else {
             sideFlipperLeft.setPosition(openFlipperPosition);
+        } else {
+            sideFlipperLeft.setPosition(closedFlipperPosition);
         }
         if (gamepad1.dpad_right) {
             middleFlipper.setPosition(middleFlipperPosition);
@@ -35,21 +36,17 @@ boolean intakeState = false;
             middleFlipper.setPosition(-middleFlipperPosition);
         }
         if (gamepad1.dpad_up) {
-          FlywheelSpeed= FlywheelSpeed + 1000.0;
-          Flywheel.setPower(FlywheelSpeed);
-        } else if (gamepad1.dpad_down) {
-           Flywheel.setPower(0);
-        }
-        if (gamepad1.dpad_up) {
-            if (FlywheelSpeed < 6000.0) {
-                FlywheelSpeed = FlywheelSpeed + 1000.0;
-            } else if (FlywheelSpeed >= 6000.0) {
-                FlywheelSpeed = 6000.0;
+            if (FlywheelVelocity < 2800.0) {
+                FlywheelVelocity = FlywheelVelocity + (2800.0 * (1.0/6.0));
+            } else if (FlywheelVelocity >= 2800.0) {
+                FlywheelVelocity = 2800.0;
             }
-            Flywheel.setPower(FlywheelSpeed);
+            Flywheel.setVelocity(FlywheelVelocity);
+            telemetry.addData("New Robot Velocity: ", Flywheel.getVelocity());
+            telemetry.update();
         }
         if (gamepad1.dpad_down) {
-            Flywheel.setPower(0);
+            Flywheel.setVelocity(0);
         }
         if (gamepad1.a && intakeState == false) {
             //Code for when intake is turning on
