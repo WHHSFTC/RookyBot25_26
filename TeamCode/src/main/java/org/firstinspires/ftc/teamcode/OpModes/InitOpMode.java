@@ -3,10 +3,11 @@ package org.firstinspires.ftc.teamcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.AprilTagWebcam;
 
 public class InitOpMode extends OpMode {
     public Servo sideFlipperLeft, sideFlipperRight, middleFlipper;
@@ -15,15 +16,30 @@ public class InitOpMode extends OpMode {
     public Double closedFlipperPosition = 0.0;
     public Double middleFlipperPosition = 0.22;
     public Double FlywheelSpeed = 0.0;
+    public Double DetectedAprilTagSpeed;
     public DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
     public Double Speed;
+    public NormalizedColorSensor colorSensor;
+
+    public NormalizedRGBA colors;
+
+    public AprilTagWebcam aprilTagWebcam = new AprilTagWebcam();
+
     @Override
     public void init() {
+        aprilTagWebcam.init(hardwareMap, telemetry);
+
         sideFlipperLeft = hardwareMap.get(Servo.class, "sideFlipperLeft");
         sideFlipperRight = hardwareMap.get(Servo.class, "sideFlipperRight");
         middleFlipper = hardwareMap.get(Servo.class, "middleFlipper");
         Flywheel = hardwareMap.get(DcMotorEx.class, "Flywheel");
-        Flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Flywheel.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "intakeColorSensor");
+        colorSensor.setGain(16);
+
+
+
 
         Intake = hardwareMap.get(DcMotorEx.class, "Intake");
         //DRive train motors
