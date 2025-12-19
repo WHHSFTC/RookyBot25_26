@@ -5,10 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.OpModes.InitOpMode;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
+
 @TeleOp(name = "TeleBlue", group = "OpModes")
 public class TeleBlue extends InitOpMode {
-
-
 
     @Override
     public void loop() {
@@ -33,19 +32,33 @@ public class TeleBlue extends InitOpMode {
         if (gamepad1.dpad_left) {
             middleFlipper.setPosition(-middleFlipperPosition);
         }
+
+        DetectedAprilTagSpeed = aprilTagWebcam.calculateVelocity(id24);
+
+        if (FlywheelStatus) {
+            if (DetectedAprilTagSpeed != -1.0 && DetectedAprilTagSpeed > 0.0) {
+                FlywheelSpeed = DetectedAprilTagSpeed;
+                ManualFlywheelMode = false;
+            }
+        }
+
         if (gamepad1.dpadUpWasPressed()) { // motors have 28 ticks per revolution
-            DetectedAprilTagSpeed = aprilTagWebcam.calculateVelocity(id24);
+            FlywheelStatus = true;
+            if (ManualFlywheelMode == false) {
+                FlywheelSpeed = 0.0;
+            }
             if (DetectedAprilTagSpeed == -1.0) {
+                ManualFlywheelMode = true;
                 if (FlywheelSpeed < 1500.00) {
                     FlywheelSpeed += (1500.0 * (1.0 / 6.0));
                 } else if (FlywheelSpeed >= 1500.0) {
                     FlywheelSpeed = 1500.0;
                 }
-            } else if (DetectedAprilTagSpeed != -1.0 && DetectedAprilTagSpeed > 0.0){
-                FlywheelSpeed = DetectedAprilTagSpeed;
             }
         }
+
         if (gamepad1.dpadDownWasPressed()) {
+            FlywheelStatus = false;
             FlywheelSpeed = 0.0;
         }
         Flywheel.setVelocity(FlywheelSpeed);
@@ -65,6 +78,26 @@ public class TeleBlue extends InitOpMode {
         } else if (gamepad1.right_trigger == 0.0) {
             //Ejection OFF
             Intake.setPower(0);
+        }
+
+        if (gamepad1.a) {
+            aprilTagYaw = aprilTagWebcam.getAprilTagYaw(id24);
+            AdjustmentSpeed = aprilTagWebcam.getAdjustmentSpeed(id24);
+
+
+            if (aprilTagYaw == -1000) {return;}
+            if (aprilTagYaw > 0.5) { // robot is angled too far right; robot needs to turn left
+                leftFrontMotor.setPower(-AdjustmentSpeed);
+                leftBackMotor.setPower(-AdjustmentSpeed);
+                rightFrontMotor.setPower(AdjustmentSpeed);
+                rightBackMotor.setPower(AdjustmentSpeed);
+            } else if (aprilTagYaw < -0.5) { // robot is angled too far left; robot needs to turn right
+                leftFrontMotor.setPower(AdjustmentSpeed);
+                leftBackMotor.setPower(AdjustmentSpeed);
+                rightFrontMotor.setPower(-AdjustmentSpeed);
+                rightBackMotor.setPower(-AdjustmentSpeed);
+            }
+
         }
 
 

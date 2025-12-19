@@ -17,6 +17,10 @@ public class InitOpMode extends OpMode {
     public Double middleFlipperPosition = 0.22;
     public Double FlywheelSpeed = 0.0;
     public Double DetectedAprilTagSpeed;
+    public Double AdjustmentSpeed;
+    public Double aprilTagYaw;
+    public boolean FlywheelStatus;
+    public boolean ManualFlywheelMode = false;
     public DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
     public Double Speed;
     public NormalizedColorSensor colorSensor;
