@@ -110,9 +110,9 @@ public class AprilTagWebcam {
         if (detectedId.metadata != null) {
             aprilTagYDistanceVelocity = detectedId.ftcPose.y;
             if (aprilTagYDistanceVelocity <= 300.0) {
-                return 1.2615 * aprilTagYDistanceVelocity + 970.38 - 100; //100 is the offset to prevent overshooting from close distance ;
+                return 0.958 * aprilTagYDistanceVelocity + 1211.6 - 100; //100 is the offset to prevent overshooting from close distance ;
             } else {
-                return 1.2615 * aprilTagYDistanceVelocity + 970.38;
+                return 0.958 * aprilTagYDistanceVelocity + 1211.6;
             }
         } else {
             return -1;
