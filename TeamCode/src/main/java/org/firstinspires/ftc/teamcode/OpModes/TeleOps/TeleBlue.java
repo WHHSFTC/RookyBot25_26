@@ -68,6 +68,15 @@ public class TeleBlue extends InitOpMode {
             }
         }
 
+        if (BrakingStatus) {
+            if (CurrentFlywheelSpeed > 100) {
+                FlywheelSpeed = -100.0;
+            } else {
+                FlywheelSpeed = 0.0;
+                BrakingStatus = false;
+            }
+        }
+
         if (gamepad1.dpadDownWasPressed()) {
             FlywheelStatus = false;
             FlywheelSpeed = 0.0;
@@ -75,6 +84,7 @@ public class TeleBlue extends InitOpMode {
         Flywheel.setVelocity(FlywheelSpeed);
         telemetry.addData("Target Flywheel Speed:", FlywheelSpeed);
         telemetry.addData("Actual Flywheel Speed:", Flywheel.getVelocity());
+        CurrentFlywheelSpeed = Flywheel.getVelocity();
         
         if (gamepad1.right_trigger > 0.0) {
             //Intaking ON
