@@ -19,10 +19,10 @@ public class InitOpMode extends OpMode {
     public Double DetectedAprilTagSpeed;
     public Double AdjustmentSpeed;
     public Double aprilTagYaw;
-    public Boolean FlywheelStatus;
+    public boolean FlywheelStatus;
     public Double CurrentFlywheelSpeed;
-    public Boolean BrakingStatus;
-    public Boolean ManualFlywheelMode = false;
+    public boolean BrakingStatus;
+    public boolean ManualFlywheelMode = false;
     public DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
     public Double Speed;
     public NormalizedColorSensor colorSensor;
