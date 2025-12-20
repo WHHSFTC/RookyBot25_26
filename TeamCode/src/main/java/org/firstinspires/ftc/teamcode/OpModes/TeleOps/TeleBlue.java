@@ -79,7 +79,7 @@ public class TeleBlue extends InitOpMode {
 
         if (gamepad1.dpadDownWasPressed()) {
             FlywheelStatus = false;
-            FlywheelSpeed = 0.0;
+            BrakingStatus = true;
         }
         Flywheel.setVelocity(FlywheelSpeed);
         telemetry.addData("Target Flywheel Speed:", FlywheelSpeed);
