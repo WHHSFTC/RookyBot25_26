@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Subsystems.AprilTagWebcam;
 
@@ -24,6 +25,12 @@ public class InitOpMode extends OpMode {
     public DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
     public Double Speed;
     public NormalizedColorSensor colorSensor;
+    public boolean BrakingStatus;
+    public Double CurrentFlywheelSpeed;
+    public ElapsedTime actionTimer1 = new ElapsedTime();
+    public int intakeState1 = 0;
+    public ElapsedTime actionTimer = new ElapsedTime();
+    public int intakeState = 0;
 
     public NormalizedRGBA colors;
 
