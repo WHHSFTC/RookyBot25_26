@@ -70,18 +70,19 @@ public class AprilTagWebcam {
             telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detectedId.center.x, detectedId.center.y));
         }
     }
-    private double aprilTagYaw;
+
+    private double aprilTagBearing;
     private double aprilTagYDistanceAdjusting;
     private double aprilTagYDistanceVelocity;
     private double RotateSpeed;
-    public double getAprilTagYaw(AprilTagDetection detectedId) {
+    public double getAprilTagBearing(AprilTagDetection detectedId) {
         if (detectedId == null) {
-            return -1000;
+            return -1000.0;
         }
         if (detectedId.metadata != null) {
-            aprilTagYaw = detectedId.ftcPose.yaw;
+            aprilTagBearing = detectedId.ftcPose.bearing;
         }
-        return aprilTagYaw;
+        return aprilTagBearing;
     }
 
     public double getAdjustmentSpeed(AprilTagDetection detectedId) {
@@ -109,11 +110,9 @@ public class AprilTagWebcam {
         if (detectedId == null) {return -1;}
         if (detectedId.metadata != null) {
             aprilTagYDistanceVelocity = detectedId.ftcPose.y;
-            if (aprilTagYDistanceVelocity <= 300.0) {
-                return 0.958 * aprilTagYDistanceVelocity + 1211.6 - 100; //100 is the offset to prevent overshooting from close distance ;
-            } else {
-                return 0.958 * aprilTagYDistanceVelocity + 1211.6;
-            }
+
+            return 2.3618 * aprilTagYDistanceVelocity + 755.1; 
+
         } else {
             return -1;
         }
